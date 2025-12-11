@@ -34,7 +34,7 @@ class ArmController:
         if 1 <= rank <= 3:
             base[1] += 3
         elif 4 <= rank <= 6:
-            base[1] += 5
+            base[1] += 4
         return base
     
     def move_to_neutral(self):
@@ -50,7 +50,7 @@ class ArmController:
         dst_close = self.sq_pose(dst, 180)
         src_open = self.sq_pose(src, 140)
         dst_open = self.sq_pose(dst, 140)
-        src_open[1] += 3
+        src_open[1] += 2
         
         self.move(self.NEUTRAL_POS_OPEN, 800, 1.0)
         self.move(src_open, 2000, 2.0)

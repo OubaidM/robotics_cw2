@@ -380,6 +380,7 @@ class ChessVisionSystem:
         print("✅ Board state initialized from vision")
         return True
 
+
     def detect_move(self, image):
         """
         Detect a move using authoritative board_state + YOLO occupancy.
@@ -576,7 +577,6 @@ class ChessVisionSystem:
             "valid": False,
             "error": f"Unexpected pattern: {len(disappeared)} disappeared, {len(appeared)} appeared"
         }
-
 
     def reset_detection_state(self):
         """Reset detection state to force re-initialization on next move."""
