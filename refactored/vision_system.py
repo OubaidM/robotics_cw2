@@ -60,49 +60,69 @@ class ChessVisionSystem:
         print("3. Bottom-right corner")
         print("4. Bottom-left corner")
         print("Press 'r' to reset, 'q' to quit")
-        
+
         corners = []
-        clone = image.copy()
-        
+
+        # ---- SCALE FOR SMALL SCREEN ----
+        # You can adjust this number depending on Pi screen resolution
+        display_scale = 0.5  # 0.5 = half size, try 0.6 or 0.4 if needed
+
+        small = cv2.resize(image, (0, 0), fx=display_scale, fy=display_scale)
+        clone = small.copy()
+
         def mouse_callback(event, x, y, flags, param):
             if event == cv2.EVENT_LBUTTONDOWN and len(corners) < 4:
-                corners.append((x, y))
+                # Convert from scaled coords -> original coords
+                orig_x = int(x / display_scale)
+                orig_y = int(y / display_scale)
+
+                corners.append((orig_x, orig_y))
+
+                # Draw marks on the small image (scaled)
                 cv2.circle(clone, (x, y), 5, (0, 255, 0), -1)
-                cv2.putText(clone, str(len(corners)), (x+10, y+10), 
-                           cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                cv2.putText(clone, str(len(corners)), (x + 10, y + 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
                 if len(corners) > 1:
-                    cv2.line(clone, corners[-2], corners[-1], (0, 255, 0), 2)
+                    # Draw lines on scaled preview
+                    prev_scaled = (int(corners[-2][0] * display_scale),
+                                int(corners[-2][1] * display_scale))
+                    curr_scaled = (x, y)
+                    cv2.line(clone, prev_scaled, curr_scaled, (0, 255, 0), 2)
+
                 if len(corners) == 4:
-                    cv2.line(clone, corners[-1], corners[0], (0, 255, 0), 2)
+                    first_scaled = (int(corners[0][0] * display_scale),
+                                    int(corners[0][1] * display_scale))
+                    cv2.line(clone, (x, y), first_scaled, (0, 255, 0), 2)
+
                 cv2.imshow("Calibration", clone)
-        
+
         cv2.namedWindow("Calibration")
         cv2.setMouseCallback("Calibration", mouse_callback)
         cv2.imshow("Calibration", clone)
-        
+
         while len(corners) < 4:
             key = cv2.waitKey(1) & 0xFF
             if key == ord('r'):
                 corners = []
-                clone = image.copy()
+                clone = small.copy()
                 cv2.imshow("Calibration", clone)
             elif key == ord('q'):
                 cv2.destroyAllWindows()
                 return False
-        
-        cv2.waitKey(500)
+
         cv2.destroyAllWindows()
-        
-        # Calculate homography matrix
+
+        # ---- USE THE ORIGINAL RESOLUTION POINTS FOR HOMOGRAPHY ----
         src_pts = np.array(corners, dtype=np.float32)
         dst_pts = np.array([[0, 0], [800, 0], [800, 800], [0, 800]], dtype=np.float32)
         self.homography_matrix = cv2.getPerspectiveTransform(src_pts, dst_pts)
-        
-        # Generate 64 square centers and boundaries
+
         self._generate_square_grid()
-        
-        print("✅ Board calibrated successfully!")
+
+        print("? Board calibrated successfully!")
         return True
+
     
     def _generate_square_grid(self):
         """Generate the 64 square centers and boundaries in transformed space."""

@@ -1,13 +1,15 @@
 # arm_controller.py - Robot arm control
 import json
 import time
-from Arm_Lib import Arm_Device
+import sys  # Path setup first
+sys.path.insert(0, "/usr/local/lib/python3.11/dist-packages/Arm_Lib-0.0.5-py3.11.egg")
+from Arm_Lib import Arm_Device  # Import after
 
 
 class ArmController:
     """Controller for the robotic arm."""
     
-    def __init__(self, board_config_path="../all_squares_touch.json"):
+    def __init__(self, board_config_path="all_squares_touch.json"):
         self.arm = Arm_Device()
         self.board = json.loads(open(board_config_path).read())
         
@@ -32,7 +34,7 @@ class ArmController:
         if 1 <= rank <= 3:
             base[1] += 3
         elif 4 <= rank <= 6:
-            base[1] += 6
+            base[1] += 5
         return base
     
     def move_to_neutral(self):

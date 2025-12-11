@@ -9,7 +9,7 @@ class GameConfig:
     """Game configuration with defaults."""
     difficulty_elo: int = 1200
     human_color: str = "black"  # "white" or "black"
-    camera_index: int = 1
+    camera_index: int = 0
     display_scale: float = 0.5
     stockfish_path: str = "stockfish"
     calibration_file: str = "calibration_data.json"

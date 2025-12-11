@@ -17,6 +17,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 import json
 import time
+import sys
+sys.path.insert(0,'/usr/local/lib/python3.11/dist-packages/Arm_Lib-0.0.5-py3.11.egg')
 from Arm_Lib import Arm_Device
 
 class ArmController:
@@ -105,7 +107,7 @@ class GameConfig:
     """Game configuration with defaults."""
     difficulty_elo: int = 1200
     human_color: str = "white"  # "white" or "black"
-    camera_index: int = 1
+    camera_index: int = 0
     display_scale: float = 0.5
     stockfish_path: str = "stockfish-windows-x86-64-avx2.exe"
     calibration_file: str = "calibration_data.json"
@@ -651,7 +653,7 @@ class ChessGameIntegration:
             print("✓ Engine closed")
 
 class ChessVisionSystem:
-    def __init__(self, model_path="best_yolov12s.pt"):
+    def __init__(self, model_path="robot_code/models/best_yollov11s.pt"):
         """Initialize the chess vision system."""
         self.model = YOLO(model_path)
         self.homography_matrix = None
@@ -1672,7 +1674,7 @@ class ChessVisionGUI:
     
     def start_camera(self):
         """Start camera capture thread."""
-        self.cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
+        self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
             messagebox.showerror("Error", "Could not open camera!")
             return
@@ -1970,7 +1972,7 @@ def main():
     print(f"  Display scale: {config.display_scale}")
     
     # Initialize camera
-    cap = cv2.VideoCapture(config.camera_index, cv2.CAP_DSHOW)
+    cap = cv2.VideoCapture(config.camera_index)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     
@@ -1988,7 +1990,7 @@ def main():
             return
     
     # Initialize vision system
-    vision = ChessVisionSystem(model_path="best_yolov12s.pt")
+    vision = ChessVisionSystem(model_path="robot_code/models/best_yollov11s.pt")
     
     # Initialize game integration
     # Ask if user wants to use robot arm

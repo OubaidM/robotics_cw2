@@ -34,20 +34,22 @@ def main():
             return
     
     # Initialize vision system
-    vision = ChessVisionSystem(model_path="robot_code\models\best_yolov11s.pt")
+    vision = ChessVisionSystem(model_path="robot_code/models/best_yollov11s.pt")
 
     
     # Initialize game integration
-    print("\n=== ROBOT ARM SETUP ===")
-    use_robot_input = input("Use robotic arm? (y/n): ").lower().strip()
-    use_robot = use_robot_input == 'y'
+    # print("\n=== ROBOT ARM SETUP ===")
+    # use_robot_input = input("Use robotic arm? (y/n): ").lower().strip()
+    # use_robot = use_robot_input == 'y'
     
-    if use_robot:
-        print("✅ Using robotic arm")
-    else:
-        print("✅ Running in simulation mode (no physical robot)")
+    # if use_robot:
+    #     print("✅ Using robotic arm")
+    # else:
+    #     print("✅ Running in simulation mode (no physical robot)")
+
+    use_robot=True
     
-    game = ChessGameIntegration(vision, config.difficulty_elo, use_robot=use_robot)
+    game = ChessGameIntegration(vision, config.difficulty_elo, use_robot=True)
     game.set_human_color(config.human_color)
     
     print(f"\n=== GAME SETUP ===")
@@ -260,7 +262,11 @@ def run_game_loop(vision, game, config, cap):
                     
                     # CRITICAL: Wait for robot to settle and re-sync vision
                     print("⏳ Waiting for board to settle...")
-                    time.sleep(10.0)  # Give time for pieces to settle
+                    time.sleep(2.0)
+
+                    for _ in range(10):  
+                        cap.read()
+                        time.sleep(0.03)
                     
 
                     # Re-read a frame after robot finishes moving

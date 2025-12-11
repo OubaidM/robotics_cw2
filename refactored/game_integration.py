@@ -10,7 +10,7 @@ from arm_controller import ArmController
 class ChessGameIntegration:
     """Bridge between Vision System and Chess Engine/Robot."""
     
-    def __init__(self, vision_system, difficulty_elo=1200, use_robot=False):
+    def __init__(self, vision_system, difficulty_elo=1200, use_robot=True):
         """
         Args:
             vision_system: ChessVisionSystem instance
@@ -355,11 +355,11 @@ class ChessGameIntegration:
         """Execute the move on robot arm."""
         print(f"\n=== EXECUTING ROBOT MOVE ===")
         
-        if not self.use_robot or self.arm_controller is None:
-            print("⚠ Robot arm not available - simulating move")
-            import time
-            time.sleep(2)
-            return True
+        # if not self.use_robot is None:
+        #     print("⚠ Robot arm not available - simulating move")
+        #     import time
+        #     time.sleep(2)
+        #     return True
         
         from_sq = move_info['from_square']
         to_sq = move_info['to_square']
