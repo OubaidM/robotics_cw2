@@ -402,7 +402,7 @@ def show_move_visualization(cap, config, vision, move_info, player):
         
         from_sq = move_info['from_square']
         to_sq = move_info['to_square']
-        cv2.putText(vis_display, f"{player}: {from_sq}→{to_sq}", (10, 30), 
+        cv2.putText(vis_display, f"{player}: {from_sq}->{to_sq}", (10, 30), 
                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
         
         cv2.imshow(f"{player} Move", vis_display)

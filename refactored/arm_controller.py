@@ -60,7 +60,7 @@ class ArmController:
         self.move(dst_open, 500, 0.7)
         self.move(self.NEUTRAL_POS, 2000, 2.0)
         
-        print(f"✅ Moved {src} → {dst}")
+        print(f"✅ Moved {src} -> {dst}")
     
     def remove_piece(self, sq: str):
         """Remove a piece from the board (for captures)."""

@@ -400,7 +400,7 @@ class ChessGameIntegration:
         print(f"Human color: {'White' if self.human_color == chess.WHITE else 'Black'}")
         
         if vision_move_info and vision_move_info.get('valid'):
-            print(f"Processing human move: {vision_move_info['from_square']}→{vision_move_info['to_square']}")
+            print(f"Processing human move: {vision_move_info['from_square']}->{vision_move_info['to_square']}")
             
             if self.process_human_move(vision_move_info):
                 print(f"✅ Human move processed successfully")

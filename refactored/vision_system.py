@@ -495,7 +495,7 @@ class ChessVisionSystem:
         # --- CASE 2: Capture (1 disappeared, 0 appeared) ---
         if len(disappeared) == 1 and len(appeared) == 0:
             from_sq = list(disappeared)[0]
-            print("Pattern: 1 disappeared, 0 appeared → potential capture")
+            print("Pattern: 1 disappeared, 0 appeared -> potential capture")
 
             fr, fc = idx(from_sq)
             piece = self.board_state[fr][fc]
@@ -527,7 +527,7 @@ class ChessVisionSystem:
                     print(f"{sq} lost YOLO class (prev={prev_class})")
                     changed.append(sq)
 
-            # --- If exactly ONE YOLO-change → capture square ---
+            # --- If exactly ONE YOLO-change -> capture square ---
             if len(changed) == 1:
                 to_sq = changed[0]
                 self.prev_detected_state = detected_state.copy()
@@ -546,7 +546,7 @@ class ChessVisionSystem:
 
             if len(occupied_targets) == 1:
                 to_sq = occupied_targets[0]
-                print(f"Fallback: Only one legal target occupied → {to_sq}")
+                print(f"Fallback: Only one legal target occupied -> {to_sq}")
 
                 self.prev_detected_state = detected_state.copy()
                 self.detected_pieces_state = detected_state.copy()
@@ -663,7 +663,7 @@ class ChessVisionSystem:
         
         fen_after = self.board_to_fen()
         
-        print(f"✅ Board state updated: {from_sq} → {to_sq}")
+        print(f"✅ Board state updated: {from_sq} -> {to_sq}")
         return True
     
     def _update_en_passant(self, from_sq, to_sq, piece):
