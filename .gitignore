@@ -1,1 +1,4 @@
 chess_env/
+refactored/__pycache__
+calibration_data.json
+game_config.json
